@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 
 const connectionString = process.env.DATABASE_URL || 'postgres://postgres:tickets@localhost:5432/postgres'
-const sequelize = new Sequelize(connectionString, { define: { timestamps: false } })
+const sequelize = new Sequelize(connectionString, { define: { timestamps: true }})
 
 sequelize.sync()
   .then(() => {

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../db')
+const bcrypt = require('bcrypt')
 
 const User = sequelize.define('users',
   {
@@ -33,6 +34,16 @@ const User = sequelize.define('users',
     timestamps: false,
     tableName: 'users'
   }
+)
+User.beforeCreate(function (user, options) {
+  return bcrypt.hash(user.password, 10)
+  .then(hash => {
+      user.password = hash;
+  })
+  .catch(err => { 
+    new Error()
+  })
+}
 )
 
 module.exports = User

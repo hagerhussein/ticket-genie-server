@@ -10,8 +10,12 @@ const Event = sequelize.define('events',
       type: Sequelize.STRING,
       allowNull: false
     },
-    description: {
+    location: {
       type: Sequelize.STRING,
+      allowNull: false
+    },
+    description: {
+      type: Sequelize.TEXT,
       allowNull: false
     },
     picture: {

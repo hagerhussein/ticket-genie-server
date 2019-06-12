@@ -18,7 +18,6 @@ const Ticket = sequelize.define('tickets',
     }
   },
   {
-    timestamps: false,
     tableName: 'tickets'
   }
 )
