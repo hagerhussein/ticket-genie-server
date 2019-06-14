@@ -6,21 +6,21 @@ const auth = require('../users/authMiddleware')
 
 const router = new Router()
 
-router.get('./tickets/:id', (req, res, next) => {
+router.get('/tickets/:id', (req, res, next) => {
   Ticket
-    .findByPK(req.params.id, { include: [Comment] })
+    .findByPk(req.params.id, { include: [Comment] })
     .then(ticket => {
       if (!ticket) {
         res.status(404).send({
           message: 'Ticket is not found'
         })
       }
-      return res.send(ticket)
+      return res.send({ticket})
     })
     .catch(error => next(error))
 })
 
-router.post('./tickets', auth, (req, res) => {
+router.post('/tickets', auth, (req, res) => {
   const { userId } = req.body
 
   Ticket
@@ -42,7 +42,7 @@ router.post('./tickets', auth, (req, res) => {
     })
 })
 
-router.put('./tickets/:id', auth, (req, res) => {
+router.put('/tickets/:id', auth, (req, res) => {
   Ticket
     .findByPk(req.params.id, { include: [User] })
     .then(ticket => {

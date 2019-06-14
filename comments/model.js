@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../db')
-const Ticket = require('../tickets/model')
 const User = require('../users/model')
+const Ticket = require('../tickets/model')
 
 const Comment = sequelize.define('comments',
   {
@@ -17,6 +17,8 @@ const Comment = sequelize.define('comments',
     tableName: 'comments'
   }
 )
-Ticket.hasMany(Comment)
+//Ticket.hasMany(Comment)
 User.hasMany(Comment)
+
+
 module.exports = Comment
