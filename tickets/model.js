@@ -16,11 +16,11 @@ const Ticket = sequelize.define('tickets',
       allowNull: false
     },
     price: {
-      type: Sequelize.DECIMAL,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     risk: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DECIMAL,
       allowNull: false,
       defaultValue: 5,
       validate:{
@@ -33,77 +33,77 @@ const Ticket = sequelize.define('tickets',
     tableName: 'tickets'
   }
 )
-/*console.log ('hello')
-let tickets = () =>{
-Ticket.findAll()
-.then({return tickets})
-} 
-console.log(tickets)*/
 
- /*let authorRisk = Ticket 
-  .findAndCountAll({
-    where: { 
-      userId: Ticket.userId
-    }
-  })
-  .then(function(tickets){
-  let authorRisk = tickets
-  })
-
-console.log(authorRisk)
-  /*console.log(authorRisk)
-  => {
-    if(tickets === 1) {
-      return auhtorRisk = Ticket.risk += 5
-    } else{
-      return Ticket.risk
-    }
-  })
-  .catch(err => {
-    console.error(err)})
-}
-
-let priceRisk = () => {
-  let prices = []
-  let total = 
-
-  Ticket
-  .findAndCountAll({
-    where : {
-      eventId: Ticket.eventId
-    }
-  })
-  .then(tickets => prices.push(tickets.price))
-  .then(total = prices.reduce((accum, currentPrice) => {
-  return accum + currentPrice,0}))
-  .then(averagePrice = total/tickets)
-  return averagePrice
-  .then(averagePrice => { let diff = averagePrice - Ticket.price
-  })
-}*/
-  
 
  /*async function getAllTickets (){
-  const result = await Ticket.findAll()
+   await Ticket.findAll()
   console.log (result)
  }
  console.log(allTickets)*/
 
 Ticket.beforeCreate(function(ticket, options){
- Ticket.findAndCountAll({
-   where:  {
-    userId :{
-      [Op.eq]: ticket.userId}
+  //ticket.risk = 5
+ 
+  let time = new Date(ticket.createdAt).getUTCHours()
+  if (time >= 9 && time <= 17) {
+    return ticket.risk -= 10
+  } 
+ else { ticket.risk += 10 } })// this is working 
+ 
+ /*Ticket.beforeCreate(function(ticket,options){
+  Ticket.findAndCountAll({
+    where:  {
+     userId :{
+       [Op.eq]: ticket.userId}
+     }
+  })
+  .then(function(result){
+    if (result> 0) {
+      return ticket.risk += 10
+    } else {
+      return ticket.risk
     }
+  })
  })
- .then(function(result){
-   if (result === 0) {
-     return ticket.risk += 10
-   } else {
-     return ticket.risk
-   }
- })
+
+ 
+ /*let totalPrice
+ Ticket.findAll({
+  where:  {
+   eventId :{
+     [Op.eq]: ticket.eventId}
+   },
+   group: ['Ticket.id'],
+   attributes: [[sequelize.fn('SUM', sequelize.col('ticket.price')), 'total']],
+   duplicating: false
 })
+.then(total => {return totalPrice = total})
+.then(console.log(totalPrice))
+let numberOfTickets 
+let avrgPrice = totalPrice / numberOfTickets
+let difOfPrice = avrgPrice - ticket.price
+   Ticket.count({
+      where:  {
+        eventId :{
+          [Op.eq]: ticket.eventId}
+        }
+    })
+    .then(function(result) {let  numberOfTickets = result
+    })
+      .then (console.log(numberOfTickets))
+    
+
+      if (difOfPrice > 0) {
+        return ticket.risk += difOfPrice
+      } if (difOfPrice < 0) {
+        return ticket.risk = Math.round(ticket.risk + difOfPrice)
+      }
+      if (difOfPrice < -10) {
+        return ticket.risk = Math.round(ticket.risk - 10)
+      } else {
+        return ticket.risk
+      }*/
+    
 
 
 Event.hasMany(Ticket)

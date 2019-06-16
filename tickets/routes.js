@@ -6,6 +6,16 @@ const auth = require('../users/authMiddleware')
 
 const router = new Router()
 
+router.get('/tickets', (req, res, next) => {
+  Ticket
+    .findAll({ include: [Comment] })
+    .then(tickets => {
+      res.send({ tickets: tickets })
+    })
+    .catch(error => next(error))
+  })
+
+
 router.get('/tickets/:id', (req, res, next) => {
   Ticket
     .findByPk(req.params.id, { include: [Comment] })
@@ -20,27 +30,32 @@ router.get('/tickets/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-router.post('/tickets', auth, (req, res) => {
+router.post('/tickets',/* auth,*/ (req, res, next) => {
   const { userId } = req.body
+  const {eventId} = req.body
 
   Ticket
     .create(req.body)
-    .then(ticket => {
+    /*.then(ticket => {
       User
         .findByPk(userId)
         .then(user => {
-          user
-            .setTicket(ticket)
+          ticket
+            .set(userId)
             .then(() => ticket.addUser(user))
             .then(() => Ticket.findAll({
               include: [{ model: User }]
-            }))
-            .then(tickets => {
-              res.status(201).send(tickets)
+            }))*/
+            .then(ticket => {
+              if (!ticket) {
+                res.status(404).send({
+                  message: 'Ticket cannot be created'
+                })
+              }
+              return res.send({ticket})
             })
+            .catch(error => next(error))
         })
-    })
-})
 
 router.put('/tickets/:id', auth, (req, res) => {
   Ticket
