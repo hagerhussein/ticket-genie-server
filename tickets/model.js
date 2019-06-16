@@ -4,6 +4,8 @@ const Event = require('../events/model')
 const User = require('../users/model')
 const Comment = require('../comments/model')
 
+const Op = Sequelize.Op
+
 const Ticket = sequelize.define('tickets',
   {
     picture: {
@@ -31,17 +33,28 @@ const Ticket = sequelize.define('tickets',
     tableName: 'tickets'
   }
 )
+/*console.log ('hello')
+let tickets = () =>{
+Ticket.findAll()
+.then({return tickets})
+} 
+console.log(tickets)*/
 
-/*let authorRisk = () => {
-  Ticket 
+ /*let authorRisk = Ticket 
   .findAndCountAll({
     where: { 
       userId: Ticket.userId
     }
   })
-  .then(tickets => {
+  .then(function(tickets){
+  let authorRisk = tickets
+  })
+
+console.log(authorRisk)
+  /*console.log(authorRisk)
+  => {
     if(tickets === 1) {
-      return auhtorRisk = Ticket.risk =+ 5
+      return auhtorRisk = Ticket.risk += 5
     } else{
       return Ticket.risk
     }
@@ -67,14 +80,30 @@ let priceRisk = () => {
   return averagePrice
   .then(averagePrice => { let diff = averagePrice - Ticket.price
   })
-  }
+}*/
   
- 
 
-Ticket.beforeBulkUpdate(function(options){
- 
+ /*async function getAllTickets (){
+  const result = await Ticket.findAll()
+  console.log (result)
+ }
+ console.log(allTickets)*/
 
-})*/
+Ticket.beforeCreate(function(ticket, options){
+ Ticket.findAndCountAll({
+   where:  {
+    userId :{
+      [Op.eq]: ticket.userId}
+    }
+ })
+ .then(function(result){
+   if (result === 0) {
+     return ticket.risk += 10
+   } else {
+     return ticket.risk
+   }
+ })
+})
 
 
 Event.hasMany(Ticket)

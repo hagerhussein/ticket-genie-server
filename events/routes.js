@@ -4,6 +4,7 @@ const Ticket = require('../tickets/model')
 const auth = require('../users/authMiddleware')
 const User = require('../users/model')
 const Sequelize = require('sequelize')
+const Comment = require('../comments/model')
 
 const Op = Sequelize.Op
 const router = new Router()
@@ -46,7 +47,7 @@ router.get('/events', (req, res, next) => {
 
 router.get('/events/:id', (req, res, next) => {
   Event
-    .findByPk(req.params.id, { include: Ticket })
+    .findByPk(req.params.id, { include: Ticket, Comment })
     .then(event => {
       if (!event) {
         return res.status(404).send({

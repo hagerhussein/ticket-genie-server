@@ -2,12 +2,13 @@ const { Router } = require('express')
 const Ticket = require('../tickets/model')
 const User = require('../users/model')
 const auth = require('../users/authMiddleware')
+const Comment = require('./model')
+const Event = require('../events/model')
 
 const router = new Router()
 
-router.post('/comments/:id', auth, (req, res) => {
-  const { userId, eventId } = req.body
-
+router.post('/comments', auth, (req, res, next) => {
+  const { userId, ticketId } = req.body
   Comment
     .create(req.body)
     .then(comment => {
@@ -20,22 +21,20 @@ router.post('/comments/:id', auth, (req, res) => {
         })
     }
     )
-    .then(comment => {
-      Event
-        .findByPk(eventId)
-        .then(event => {
-          event
+   .then(comment => {
+      Ticket
+        .findByPk(ticketId)
+        .then(ticket => {
+          ticket
             .setComment(comment)
-            .then(() => comment.addEvent(event))
+            .then(() => comment.addTicket(ticket))
         })
 
     })
-    .then(() => Comment.findAll({
-      include: [Event, User]
-    }))
-    .then(comments => {
-      res.status(201).send(comments)
+    .then(comment => {
+      res.status(201).send(comment)
     })
+    .catch(error => next(error))
 })
 
 module.exports = router
