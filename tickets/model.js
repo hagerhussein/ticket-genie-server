@@ -105,7 +105,19 @@ let difOfPrice = avrgPrice - ticket.price
        return ticket.risk
      }*/
 
-
+    /* sequelize
+     .query('SELECT * FROM tickets', {
+       model: Ticket,
+       mapToModel: true ,
+       where:  {
+        eventId :{
+          [Op.eq]: 1}
+        }
+    })
+     .then(tickets => [[sequelize.fn('sum', sequelize.col('price')), 'total']])
+      .then(console.log(result))*/
+     
+   
 
 Event.hasMany(Ticket)
 User.hasMany(Ticket)
