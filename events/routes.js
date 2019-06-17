@@ -11,17 +11,17 @@ const router = new Router()
 
 router.get('/events', (req, res, next) => {
   Event
-  .findAll({
-    where: {
-      endDate: {
-        [Op.gte]: new Date()
+    .findAll({
+      where: {
+        endDate: {
+          [Op.gte]: new Date()
+        }
       }
-    }
-  })
-  .then(events => {
-    res.send({ events: events })
-  })
-  .catch(error => next(error))
+    })
+    .then(events => {
+      res.send({ events: events })
+    })
+    .catch(error => next(error))
 })
 /*router.get('/events/:page', (req, res, next) => {
   let limit = req.query.limit || 9
@@ -54,30 +54,22 @@ router.get('/events/:id', (req, res, next) => {
           message: `Event does not exist anymore`
         })
       }
-      return res.send({event})
+      return res.send({ event })
     })
     .catch(error => next(error))
 })
 
-router.post('/events', auth, (req, res) => {
-  const { userId } = req.body
-
+router.post('/events', auth, (req, res, next) => {
   Event
     .create(req.body)
     .then(event => {
-      User
-        .findByPk(userId)
-        .then(user => {
-          user
-            .setEvent(event)
-            .then(() => event.addUser(user))
-            .then(() => Event.findAll({
-              include: [{ model: User }]
-            }))
-            .then(events => {
-              res.status(201).send(events)
-            })
+      if (!event) {
+        res.status(404).send({
+          message: 'Event cannot be created'
         })
+      }
+      return res.send({ event })
     })
+    .catch(error => next(error))
 })
 module.exports = router
