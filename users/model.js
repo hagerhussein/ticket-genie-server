@@ -37,12 +37,12 @@ const User = sequelize.define('users',
 )
 User.beforeCreate(function (user, options) {
   return bcrypt.hash(user.password, 10)
-  .then(hash => {
+    .then(hash => {
       user.password = hash;
-  })
-  .catch(err => { 
-    new Error()
-  })
+    })
+    .catch(err => {
+      new Error()
+    })
 }
 )
 

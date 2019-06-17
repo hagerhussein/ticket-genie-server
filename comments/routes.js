@@ -7,34 +7,24 @@ const Event = require('../events/model')
 
 const router = new Router()
 
-router.post('/comments',/* auth,*/ (req, res, next) => {
-  const { userId, ticketId } = req.body
+router.post('/comments', auth, (req, res, next) => {
+  const { ticketId } = req.body
   Comment
-    .create(req.body)
-    .then(comment => {
-      User
-        .findByPk(userId)
-        .then(user => {
-          user
-            .setComment(comment)
-            .then(() => comment.addUser(user))
-        })
-    }
+    .create(req.body.text)
+    .then(comment => (
+      comment
+        .set(ticketId))
+      .then(comment => {
+        if (!comment) {
+          res.status(404).send({
+            message: 'Comment cannot be created'
+          })
+        }
+        return res.send({ comment })
+      })
+      .catch(error => next(error))
     )
-   .then(comment => {
-      Ticket
-        .findByPk(ticketId)
-        .then(ticket => {
-          ticket
-            .setComment(comment)
-            .then(() => comment.addTicket(ticket))
-        })
-
-    })
-    .then(comment => {
-      res.status(201).send(comment)
-    })
-    .catch(error => next(error))
 })
+
 
 module.exports = router

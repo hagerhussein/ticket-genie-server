@@ -13,7 +13,7 @@ router.get('/tickets', (req, res, next) => {
       res.send({ tickets: tickets })
     })
     .catch(error => next(error))
-  })
+})
 
 
 router.get('/tickets/:id', (req, res, next) => {
@@ -25,37 +25,38 @@ router.get('/tickets/:id', (req, res, next) => {
           message: 'Ticket is not found'
         })
       }
-      return res.send({ticket})
+      return res.send({ ticket })
     })
     .catch(error => next(error))
 })
 
-router.post('/tickets',auth,(req, res, next) => {
+router.post('/tickets', auth, (req, res, next) => {
   const { userId } = req.body
-  const {eventId} = req.body
+  const { eventId } = req.body
   Ticket
     .create(req.body)
     .then(ticket => (
-          ticket
-            .set(userId))
-            .then(() => ticket.set(eventId))
-            .then(ticket => {
-              if (!ticket) {
-                res.status(404).send({
-                  message: 'Ticket cannot be created'
-                })
-              }
-              return res.send({ticket})
-            })
-            .catch(error => next(error))
-        )
+      ticket
+        .set(userId))
+      .then(() => ticket.set(eventId))
+      .then(ticket => {
+        if (!ticket) {
+          res.status(404).send({
+            message: 'Ticket cannot be created'
+          })
+        }
+        return res.send({ ticket })
       })
+      .catch(error => next(error))
+    )
+})
 
 router.put('/tickets/:id', auth, (req, res) => {
+
   Ticket
     .findByPk(req.params.id, { include: [User] })
     .then(ticket => {
-      if (ticket.userId === req.body.userId) {
+      if (ticket.userId === req.userId) {
         return ticket.update(req.body).then(ticket => res.send(ticket))
       }
       else {
