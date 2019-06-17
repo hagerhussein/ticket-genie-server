@@ -20,6 +20,6 @@ const Comment = sequelize.define('comments',
 )
 //Ticket.hasMany(Comment)
 User.hasMany(Comment)
-//Event.hasMany(Comment)
+Event.hasMany(Comment)
 
 module.exports = Comment

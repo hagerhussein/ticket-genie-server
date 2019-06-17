@@ -20,7 +20,6 @@ const Event = sequelize.define('events',
     },
     picture: {
       type: Sequelize.STRING,
-      allowNull: false
     },
     startDate: {
       type: Sequelize.DATEONLY,

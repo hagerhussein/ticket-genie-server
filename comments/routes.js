@@ -7,7 +7,7 @@ const Event = require('../events/model')
 
 const router = new Router()
 
-router.post('/comments', auth, (req, res, next) => {
+router.post('/comments',/* auth,*/ (req, res, next) => {
   const { userId, ticketId } = req.body
   Comment
     .create(req.body)

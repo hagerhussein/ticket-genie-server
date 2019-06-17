@@ -30,22 +30,15 @@ router.get('/tickets/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-router.post('/tickets',/* auth,*/ (req, res, next) => {
+router.post('/tickets',auth,(req, res, next) => {
   const { userId } = req.body
   const {eventId} = req.body
-
   Ticket
     .create(req.body)
-    /*.then(ticket => {
-      User
-        .findByPk(userId)
-        .then(user => {
+    .then(ticket => (
           ticket
-            .set(userId)
-            .then(() => ticket.addUser(user))
-            .then(() => Ticket.findAll({
-              include: [{ model: User }]
-            }))*/
+            .set(userId))
+            .then(() => ticket.set(eventId))
             .then(ticket => {
               if (!ticket) {
                 res.status(404).send({
@@ -55,7 +48,8 @@ router.post('/tickets',/* auth,*/ (req, res, next) => {
               return res.send({ticket})
             })
             .catch(error => next(error))
-        })
+        )
+      })
 
 router.put('/tickets/:id', auth, (req, res) => {
   Ticket
