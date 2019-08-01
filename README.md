@@ -3,6 +3,7 @@ Server for the ticket swapping app.
 This app is built using the following stacks:
 
 Sequlize 
+
 Bcrypt
 Routing-controllers
 Cors
