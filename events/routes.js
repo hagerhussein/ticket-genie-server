@@ -23,27 +23,7 @@ router.get('/events', (req, res, next) => {
     })
     .catch(error => next(error))
 })
-/*router.get('/events/:page', (req, res, next) => {
-  let limit = req.query.limit || 9
-  let offset = req.query.offset || 0
-  Event
-    .findAndCountAll({where:{
-      endDate: {
-        [Op.gte]: Sequelize.NOW // new Date()
-      }
-    }})
-    .then(events => {
-      let page = req.params.page
-      let totalPages = Math.ceil(events.count / limit)
-      offset = limit * (page - 1)
-      Event
-      .findAll({limit, offset})
-      .then(events => {
-        res.send({ events:events })
-      })
-    })
-    .catch(error => next(error))
-})*/
+
 
 router.get('/events/:id', (req, res, next) => {
   Event

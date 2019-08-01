@@ -42,7 +42,7 @@ Ticket.beforeCreate(function (ticket, options) {
     return ticket.risk -= 10
   }
   else { ticket.risk += 10 }
-})// this is working 
+})
 
 
  
