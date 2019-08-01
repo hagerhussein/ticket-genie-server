@@ -1,5 +1,6 @@
 # ticket-genie-server
-Server for the ticket swapping app. This app is built using the following stacks:
+Server for the ticket swapping app. 
+This app is built using the following stacks:
 
 Sequlize 
 Bcrypt
