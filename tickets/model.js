@@ -35,15 +35,8 @@ const Ticket = sequelize.define('tickets',
 )
 
 
-/*async function getAllTickets (){
-  await Ticket.findAll()
- console.log (result)
-}
-console.log(allTickets)*/
 
 Ticket.beforeCreate(function (ticket, options) {
-  //ticket.risk = 5
-
   let time = new Date(ticket.createdAt).getUTCHours()
   if (time >= 9 && time <= 17) {
     return ticket.risk -= 10
@@ -51,21 +44,6 @@ Ticket.beforeCreate(function (ticket, options) {
   else { ticket.risk += 10 }
 })// this is working 
 
-/*Ticket.beforeCreate(function(ticket,options){
- Ticket.findAndCountAll({
-   where:  {
-    userId :{
-      [Op.eq]: ticket.userId}
-    }
- })
- .then(function(result){
-   if (result> 0) {
-     return ticket.risk += 10
-   } else {
-     return ticket.risk
-   }
- })
-})
 
  
 /*let totalPrice
@@ -78,33 +56,6 @@ Ticket.findAll({
   attributes: [[sequelize.fn('SUM', sequelize.col('ticket.price')), 'total']],
   duplicating: false
 })
-.then(total => {return totalPrice = total})
-.then(console.log(totalPrice))
-let numberOfTickets 
-let avrgPrice = totalPrice / numberOfTickets
-let difOfPrice = avrgPrice - ticket.price
-  Ticket.count({
-     where:  {
-       eventId :{
-         [Op.eq]: ticket.eventId}
-       }
-   })
-   .then(function(result) {let  numberOfTickets = result
-   })
-     .then (console.log(numberOfTickets))
-   
-
-     if (difOfPrice > 0) {
-       return ticket.risk += difOfPrice
-     } if (difOfPrice < 0) {
-       return ticket.risk = Math.round(ticket.risk + difOfPrice)
-     }
-     if (difOfPrice < -10) {
-       return ticket.risk = Math.round(ticket.risk - 10)
-     } else {
-       return ticket.risk
-     }*/
-
     /* sequelize
      .query('SELECT * FROM tickets', {
        model: Ticket,
